@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/styles/style.css">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+  <div class="center-content">
+    <div class="custom-carousel">
+      <div data-index="1" style="--card-bg: url(https://cdn.pixabay.com/photo/2022/08/15/12/13/robot-7387740__340.jpg)" class="custom-card">
+      <div class="card-overlay"></div>
+      </div>
+      <div data-index="2" style="--card-bg: url(https://cdn.pixabay.com/photo/2022/08/22/10/28/tihany-7403356__340.jpg)" class="custom-card">
+      <div class="card-overlay"></div>
+      </div>
+      <div data-index="3" style="--card-bg: url(https://cdn.pixabay.com/photo/2012/02/28/00/39/cat-17661__340.jpg)" class="custom-card">
+      <div class="card-overlay"></div>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab" data-target="1"></div>
+      <div class="tab current" data-target="2"></div>
+      <div class="tab" data-target="3"></div>
+    </div>
+  </div>
+</body>
+</html>

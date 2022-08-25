@@ -12,7 +12,7 @@ const options: IntersectionObserverInit = {
 const observer = new IntersectionObserver(updateEntries, options)
 
 function updateEntries(entries: IntersectionObserverEntry[]) {
-  entries.forEach(entry => {
+  entries.forEach(async entry => {
     const { target, intersectionRatio } = entry;
     const threshold = 0.7;
     target.classList.toggle('current', intersectionRatio > threshold);
@@ -20,7 +20,7 @@ function updateEntries(entries: IntersectionObserverEntry[]) {
       if (target instanceof HTMLElement) {
         const { index } = target.dataset;
         if (!tabIsSelected(Number(index ?? 0))) {
-          setTabOfCard(target)
+          await setTabOfCard(target)
         }
       }
     }
@@ -40,17 +40,17 @@ function generateThreshold(): number[] {
 carouselCards?.forEach(card => {
   observer.observe(card);
   if (card instanceof HTMLElement)
-    card.addEventListener('click', (e) => {
-      setCurrentCard(card);
+    card.addEventListener('click', async (e) => {
+      await setCurrentCard(card);
     })
 });
 
 tabElements.forEach(tab => {
-  tab.addEventListener('click', () => {
+  tab.addEventListener('click', async () => {
     const { target } = tab.dataset;
     const card = getCardByIndex(Number(target ?? 0));
     if (card) {
-      setCurrentCard(card);
+      await setCurrentCard(card);
     }
   })
 })
@@ -70,21 +70,28 @@ function tabIsSelected(index: number) {
   return !!(currentTab?.dataset.target == index.toString());
 }
 
-function setCurrentCard(card: HTMLElement) {
+async function setCurrentCard(card: HTMLElement) {
   scrollToElement(card);
-  setTabOfCard(card);
+  await setTabOfCard(card);
 }
 
 function setTabOfCard(card: HTMLElement) {
   const { index } = card.dataset;
-  setCurrentTab(Number(index ?? 0));
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (!tabIsSelected(Number(index ?? 0))) {
+        setCurrentTab(Number(index ?? 0));
+      }
+      resolve(index)
+    }, 200)
+  })
 }
 
 function scrollToElement(element: HTMLElement) {
   const parent = element.offsetParent;
   const left = element.offsetLeft;
   if (parent) {
-    const offsetLeft = elementIsMiddleSibling(element) ? Math.min(((element.parentElement?.clientWidth ?? 250) * -0.04), -24) : 0;
+    const offsetLeft = elementIsMiddleSibling(element) ? Math.min((window?.visualViewport.width * -0.04), -32) : 0;
     parent.scrollTo({
       left: Math.max(0, left + offsetLeft),
       behavior: 'smooth'

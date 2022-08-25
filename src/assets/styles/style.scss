@@ -54,7 +54,9 @@ body, html {
   gap: 3vw;
   position: relative;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  padding: 12px 1vw;
 }
 
 .custom-card {
@@ -71,8 +73,10 @@ body, html {
   filter: blur(4px);
   border-radius: 8px;
   &.current {
-    filter: blur(0) drop-shadow(0 2px 14px rgba(0,0,0,0.25));
+    filter: blur(0);
     transform: translateZ(-5px);
+    animation: popUp 0.8s linear;
+    z-index: 2;
   }
 }
 
@@ -88,10 +92,42 @@ body, html {
     height: 16px;
     border-radius: 100px;
     background-color: #bcab98;
-
+    transform-origin: center;
+    transition: background-color 0.2s ease-in;
     cursor: pointer;
     &.current {
       background-color: #ece5dd;
+      animation: pop 0.4s ease-out;
     }
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(0.95);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes popUp {
+  0% {
+    transform: scale(1) translateZ(-5px);
+  }
+  40% {
+    transform: scale(1.05) translateZ(-5px);
+  }
+  80% {
+    transform: scale(0.99) translateZ(-5px);
+  }
+  100% {
+    transform: scale(1) translateZ(-5px);
   }
 }
